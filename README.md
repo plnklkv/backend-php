@@ -1,1 +1,4 @@
-# backend-php
+Открыть php-проект
+Запустить терминал в PhpStorm
+Прописать в терминале команду:
+#docker-compose up -d
