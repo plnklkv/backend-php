@@ -1,25 +1,30 @@
 version: "3"
 
 services:
-    php:
-      image: php:8.1-fpm-alpine
-      ports:
-        - "9000:9000"
-
     adminer:
-      image: adminer:latest
+      image: adminer:4.8.1-standalone
       ports:
-        - "8080:8080"
+        - "${ADMINERPORT}:8080"
 
     postgresql:
+      image: postgres:alpine
       ports:
-        - "5432:5432"
+        - "${POSTGRESPORT}:5432"
       environment:
         - POSTGRES_USER=${POSTGRES_USER}
         - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      image: postgres:alpine
 
     nginx:
       image: nginx:stable-alpine
       ports:
-        - "80:80"
+        - "${NGINXPORT}:80"
+      volumes:
+        - ./code:/code
+        - ./site.conf:/etc/nginx/conf.d/site.conf
+      links:
+        - php
+    
+    php:
+      image: php:8.1-fpm-alpine
+      volumes:
+        - ./code:/code
